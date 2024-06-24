@@ -53,6 +53,7 @@ button:hover {
   background-color: #000000; /* Añadido cambio de color de fondo en hover */
 }
 
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
