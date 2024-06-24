@@ -1,18 +1,16 @@
 import React from 'react';
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
-import './App.css';
 
-const App = ({ children }) => {
+const Footer = () => {
   return (
-    <div className="App">
-      <NavBar />
-      <main className="container">
-        {children}
-      </main>
-      <Footer />
-    </div>
+    <footer className="bg-light text-center text-lg-start mt-auto">
+
+      <div className="text-center p-3" style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
+        &copy; {new Date().getFullYear()} Your Company. All rights reserved.
+      </div>
+    </footer>
   );
 };
 
-export default App;
+export default Footer;
+
+
