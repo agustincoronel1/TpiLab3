@@ -2,10 +2,9 @@ import React from 'react';
 import { Carousel } from 'react-bootstrap';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import Card from '../components/Card'; // Importa el componente Card que creamos antes
-import portada from '../assets/portada.jpg'; // Importa la imagen desde assets
+import Card from '../components/Card'; 
+import portada from '../assets/portada.jpg'; 
 
-// Datos simulados de productos (puedes reemplazar esto con datos reales de una API)
 const products = [
   { id: 1, name: 'Producto 1', price: 29.99, image: 'https://via.placeholder.com/300' },
   { id: 2, name: 'Producto 2', price: 39.99, image: 'https://via.placeholder.com/300' },
@@ -22,7 +21,6 @@ const products = [
 const Home = () => {
     const carouselItems = [];
   
-    // Dividir los productos en grupos de 4 para cada Carousel.Item
     for (let i = 0; i < products.length; i += 4) {
       const items = products.slice(i, i + 4).map(product => (
         <div className="col-md-3 d-flex justify-content-center" key={product.id}>
