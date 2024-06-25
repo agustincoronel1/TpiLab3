@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Person, Cart } from 'react-bootstrap-icons';
 
 const NavBar = () => {
   return (
@@ -9,26 +10,30 @@ const NavBar = () => {
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
+        <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+          <ul className="navbar-nav">
             <li className="nav-item">
               <Link className="nav-link active" aria-current="page" to="/">Inicio</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/shop">Productos</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/cart">Carrito</Link>
-            </li>
-            {/* <li className="nav-item">
-              <Link className="nav-link disabled" aria-disabled="true" to="#">Disabled</Link>
-            </li> */}
           </ul>
         </div>
+        <div className="d-flex">
+          {/* este boton hay que configurarlo para cuando el usuario este registrado sino lo llevaria a la vista de registro */}
+            <Link to="/register-user" className="btn btn-outline-secondary me-2">
+              <Person />
+            </Link>
+            <Link to="/cart" className="btn btn-outline-secondary">
+              <Cart />
+            </Link>
+          </div>
       </div>
     </nav>
   );
 };
 
 export default NavBar;
+
 

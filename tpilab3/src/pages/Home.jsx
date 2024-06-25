@@ -43,9 +43,16 @@ const Home = () => {
             <div className="container-fluid text-center">
               <img src={portada} alt="Portada" className="img-fluid" />
               <h2 className="mt-4 mb-3">NEW IN - *NOMBRE TIENDA*</h2>
-              <Carousel indicators={false} interval={4000} pause={false}>
-                {carouselItems}
-              </Carousel>
+              <div className="mb-5"> {/* Añadido margin-bottom */}
+                <Carousel 
+                  indicators={false} 
+                  interval={4000} 
+                  pause={false}
+                  controls={false} // Ocultar las flechas de control
+                >
+                  {carouselItems}
+                </Carousel>
+              </div>
             </div>
           </div>
           <Footer />
