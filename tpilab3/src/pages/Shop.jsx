@@ -1,19 +1,17 @@
-import React from 'react';
+import {useEffect, useState} from 'react';
 import { ArrowDown, Filter } from 'react-bootstrap-icons';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
 
-const products = [
-  { id: 1, name: 'Producto 1', price: 29.99, image: 'https://via.placeholder.com/300' },
-  { id: 2, name: 'Producto 2', price: 39.99, image: 'https://via.placeholder.com/300' },
-  { id: 3, name: 'Producto 3', price: 49.99, image: 'https://via.placeholder.com/300' },
-  { id: 4, name: 'Producto 4', price: 29.99, image: 'https://via.placeholder.com/300' },
-  { id: 5, name: 'Producto 5', price: 39.99, image: 'https://via.placeholder.com/300' },
-  { id: 6, name: 'Producto 6', price: 49.99, image: 'https://via.placeholder.com/300' },
-];
-
 const Shop = () => {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    fetch('https://fake-api-nodejs-m072.onrender.com/products')
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.log(error));
+  }, []);
   return (
     <div id="main-wrapper" className="d-flex flex-column min-vh-100">
       <NavBar />

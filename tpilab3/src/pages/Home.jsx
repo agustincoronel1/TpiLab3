@@ -1,25 +1,22 @@
-import React from 'react';
+import {useState, useEffect} from 'react';
 import { Carousel } from 'react-bootstrap';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Card from '../components/Card'; 
-import portada from '../assets/portada.jpg'; 
+import portada from '../assets/portada.jpg';
 
-const products = [
-  { id: 1, name: 'Producto 1', price: 29.99, image: 'https://via.placeholder.com/300' },
-  { id: 2, name: 'Producto 2', price: 39.99, image: 'https://via.placeholder.com/300' },
-  { id: 3, name: 'Producto 3', price: 49.99, image: 'https://via.placeholder.com/300' },
-  { id: 4, name: 'Producto 4', price: 29.99, image: 'https://via.placeholder.com/300' },
-  { id: 5, name: 'Producto 5', price: 39.99, image: 'https://via.placeholder.com/300' },
-  { id: 6, name: 'Producto 6', price: 49.99, image: 'https://via.placeholder.com/300' },
-  { id: 7, name: 'Producto 7', price: 29.99, image: 'https://via.placeholder.com/300' },
-  { id: 8, name: 'Producto 8', price: 39.99, image: 'https://via.placeholder.com/300' },
-//   { id: 9, name: 'Producto 9', price: 49.99, image: 'https://via.placeholder.com/300' },
-//   { id: 10, name: 'Producto 10', price: 29.99, image: 'https://via.placeholder.com/300' },
-];
+
 
 const Home = () => {
     const carouselItems = [];
+
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+      fetch('https://fake-api-nodejs-m072.onrender.com/products')
+        .then(response => response.json())
+        .then(data => setProducts(data))
+        .catch(error => console.log(error));
+    }, []);
   
     for (let i = 0; i < products.length; i += 4) {
       const items = products.slice(i, i + 4).map(product => (
@@ -44,14 +41,14 @@ const Home = () => {
               <img src={portada} alt="Portada" className="img-fluid" />
               <h2 className="mt-4 mb-3">NEW IN - *NOMBRE TIENDA*</h2>
               <div className="mb-5"> {/* Añadido margin-bottom */}
-                <Carousel 
+                {/* <Carousel 
                   indicators={false} 
                   interval={4000} 
                   pause={false}
                   controls={false} // Ocultar las flechas de control
                 >
                   {carouselItems}
-                </Carousel>
+                </Carousel> */}
               </div>
             </div>
           </div>

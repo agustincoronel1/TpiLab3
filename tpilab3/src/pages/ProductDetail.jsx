@@ -1,42 +1,44 @@
-import React from 'react';
+import {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
 import { Carousel } from 'react-bootstrap';
 
-const products = [
-  { id: 1, name: 'Producto 1', price: 29.99, image: 'https://via.placeholder.com/300', sizes: ['S', 'M', 'L'] },
-  { id: 2, name: 'Producto 2', price: 39.99, image: 'https://via.placeholder.com/300', sizes: ['S', 'M', 'L'] },
-  { id: 3, name: 'Producto 3', price: 49.99, image: 'https://via.placeholder.com/300', sizes: ['S', 'M', 'L'] },
-  { id: 4, name: 'Producto 4', price: 29.99, image: 'https://via.placeholder.com/300', sizes: ['S', 'M', 'L'] },
-  { id: 5, name: 'Producto 5', price: 39.99, image: 'https://via.placeholder.com/300', sizes: ['S', 'M', 'L'] },
-  { id: 6, name: 'Producto 6', price: 49.99, image: 'https://via.placeholder.com/300', sizes: ['S', 'M', 'L'] },
-  { id: 7, name: 'Producto 7', price: 59.99, image: 'https://via.placeholder.com/300', sizes: ['S', 'M', 'L'] },
-  { id: 8, name: 'Producto 8', price: 69.99, image: 'https://via.placeholder.com/300', sizes: ['S', 'M', 'L'] },
- 
-];
+
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const product = products.find(p => p.id === parseInt(id));
+  const [products, setProducts] = useState([]);
 
-  const carouselItems = [];
+  useEffect(() => {
+    fetch('https://fake-api-nodejs-m072.onrender.com/products')
+    .then(response => response.json())
+    .then(data => setProducts(data))
+    .catch(error => console.log(error));
+  }, []);
 
-  for (let i = 0; i < products.length; i += 4) {
-    const items = products.slice(i, i + 4).map(product => (
-      <div className="col-md-3 d-flex justify-content-center" key={product.id}>
-        <Card product={product} />
-      </div>
-    ));
-    carouselItems.push(
-      <Carousel.Item key={i}>
-        <div className="row justify-content-center">
-          {items}
-        </div>
-      </Carousel.Item>
-    );
-  }
+  const product = products.find(p => p.id === parseInt(id));  
+
+  const carouselItems = products.filter(product => (
+    product.featured == true
+  ));
+  
+
+  // for (let i = 0; i < products.length; i += 4) {
+  //   const items = products.slice(i, i + 4).map(product => (
+  //     <div className="col-md-3 d-flex justify-content-center" key={product.id}>
+  //       <Card product={product} />
+  //     </div>
+  //   ));
+  //   carouselItems.push(
+  //     <Carousel.Item key={i}>
+  //       <div className="row justify-content-center">
+  //         {items}
+  //       </div>
+  //     </Carousel.Item>
+  //   );
+  // }
 
   return (
     <div id="main-wrapper" className="d-flex flex-column min-vh-100">
@@ -67,9 +69,9 @@ const ProductDetail = () => {
         </div>
         <div className="mt-5">
           <h2 className="text-center mb-4">TAMBIÉN TE PUEDE INTERESAR</h2>
-          <Carousel indicators={false} interval={4000} pause={false}>
-            {carouselItems}
-          </Carousel>
+          {/* <Carousel indicators={false} interval={4000} pause={false}>
+            {carouselItems ? carouselItems : <div className="text-center">No hay productos para mostrar</div>}
+          </Carousel> */}
         </div>
       </div>
       <Footer />
