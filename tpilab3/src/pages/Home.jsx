@@ -17,9 +17,11 @@ const Home = () => {
         .then(data => setProducts(data))
         .catch(error => console.log(error));
     }, []);
-  
-    for (let i = 0; i < products.length; i += 4) {
-      const items = products.slice(i, i + 4).map(product => (
+    
+    const featuringProducts = products.filter(product => product.featured);
+
+    for (let i = 0; i < featuringProducts.length; i += 4) {
+      const items = featuringProducts.slice(i, i + 4).map(product => (
         <div className="col-md-3 d-flex justify-content-center" key={product.id}>
           <Card product={product} />
         </div>
@@ -41,14 +43,14 @@ const Home = () => {
               <img src={portada} alt="Portada" className="img-fluid" />
               <h2 className="mt-4 mb-3">NEW IN - *NOMBRE TIENDA*</h2>
               <div className="mb-5"> {/* Añadido margin-bottom */}
-                {/* <Carousel 
+                <Carousel 
                   indicators={false} 
                   interval={4000} 
                   pause={false}
                   controls={false} // Ocultar las flechas de control
                 >
                   {carouselItems}
-                </Carousel> */}
+                </Carousel>
               </div>
             </div>
           </div>
