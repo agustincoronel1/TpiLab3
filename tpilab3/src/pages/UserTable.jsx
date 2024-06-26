@@ -3,10 +3,13 @@ import { Table, Button, Container, Spinner, Nav } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
+import { useAuth } from '../services/AuthenticationContext';
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const { logout } = useAuth();
 
   async function fetchUsers() {
     try {
@@ -65,7 +68,10 @@ const UserTable = () => {
             </tbody>
           </Table>
         )}
-
+      <div>
+      <h2>Dashboard</h2>
+      <button onClick={logout}>Logout</button>
+    </div>
       </Container>
       <Footer />
     </div>

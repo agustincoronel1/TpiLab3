@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
 
-const Shop = () => {
+const Shop = ({carts}) => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     fetch('https://fake-api-nodejs-m072.onrender.com/products')
