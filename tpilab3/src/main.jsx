@@ -8,7 +8,7 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import RegisterUser from './pages/RegisterUser';
 import RegisterAdmin from './pages/RegisterAdmin';
-import Admin from './pages/Admin';
+import UserTable from './pages/UserTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
@@ -24,7 +24,7 @@ root.render(
           <Route path="cart" element={<Cart />} />
           <Route path="register-user" element={<RegisterUser />} />
           <Route path="register-admin" element={<RegisterAdmin />} />
-          <Route path="admin" element={<Admin />} />
+          <Route path="user-table" element={<UserTable />} />
         </Route>
       </Routes>
     </Router>
