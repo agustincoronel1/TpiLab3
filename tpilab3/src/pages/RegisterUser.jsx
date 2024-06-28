@@ -1,29 +1,75 @@
-import React from 'react';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
+import React, { useState } from 'react';
 import { useAuth } from '../services/AuthenticationContext';
+import { useNavigate } from 'react-router-dom';
 
-const RegisterUser = () => {
-  const {login} = useAuth();
+const LoginPage = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleLogin = () => {
-    login();
-    console.log("Login")
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const response = await fetch('https://fake-api-nodejs-m072.onrender.com/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          login(username);
+          navigate('/dashboard');
+        } else {
+          setError('Invalid username or password');
+        }
+      } else {
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setError('An error occurred. Please try again.');
+    }
   };
 
   return (
     <div>
-      <NavBar /> 
-      {/* fijarse si aca va la navbar o la hacemos custom */}
-      <h1>Register User Page</h1>
-      <div>
       <h2>Login Page</h2>
-      <button onClick={handleLogin}>Login</button>
-    </div>
-      <Footer />
-
+      <form onSubmit={handleLogin}>
+        <div>
+          <label>
+            Username:
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button type="submit">Login</button>
+      </form>
     </div>
   );
 };
 
-export default RegisterUser;
+export default LoginPage;
