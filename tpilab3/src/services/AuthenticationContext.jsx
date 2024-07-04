@@ -25,6 +25,29 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('userRole');
   };
 
+  //agrego el register 
+  const register = async (userData) => {
+    try {
+      const response = await fetch('https://fake-api-nodejs-m072.onrender.com/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        const newUser = await response.json();
+        return newUser;
+      } else {
+        throw new Error('Failed to register');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     const storedAuth = localStorage.getItem('isAuthenticated');
     const storedRole = localStorage.getItem('userRole');
@@ -35,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userRole, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, userRole, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );

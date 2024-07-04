@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import PrivateRoute from './services/PrivateRoute';
 import { AuthProvider } from './services/AuthenticationContext';
+import RegisterUser from './pages/RegisterUser';
 
 const App = () => {
   const [cart, setCart] = useState([]);
@@ -52,6 +53,13 @@ const App = () => {
           <ProductDetail />
       ),
     },
+    {
+      path: "/register",
+      element: (
+          <RegisterUser />
+      ),
+    },
+
   ]);
 
   
