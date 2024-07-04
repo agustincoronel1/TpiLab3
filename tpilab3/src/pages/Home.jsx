@@ -9,8 +9,8 @@ import portada from '../assets/portada.jpg';
 
 const Home = () => {
     const carouselItems = [];
-
     const [products, setProducts] = useState([]);
+
     useEffect(() => {
       fetch('https://fake-api-nodejs-m072.onrender.com/products')
         .then(response => response.json())

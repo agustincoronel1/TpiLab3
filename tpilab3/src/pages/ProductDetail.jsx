@@ -4,14 +4,15 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
 import { Carousel } from 'react-bootstrap';
-import { useCart } from '../services/CartContext'; // Importar el contexto del carrito
+import { useCart } from '../services/CartContext';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState({});
-  const { addToCart } = useCart(); // Usar el contexto del carrito
+  const [selectedSize, setSelectedSize] = useState('');
+  const { addToCart } = useCart();
   const carouselItems = [];
 
   async function fetchData() {
@@ -63,7 +64,12 @@ const ProductDetail = () => {
   createCarouselItems();
 
   const handleAddToCart = () => {
-    addToCart(product);
+    if (!selectedSize) {
+      alert('Por favor, selecciona un talle antes de agregar al carrito.');
+      return;
+    }
+
+    addToCart(product, selectedSize);
   };
 
   return (
@@ -84,14 +90,15 @@ const ProductDetail = () => {
                 <div className="my-3">
                   <h5>Talles disponibles:</h5>
                   <div>
-                    {product.sizes ? product.sizes.map(size => (
+                    {product.sizes && product.sizes.length > 0 ? product.sizes.map(size => (
                       <button
                         key={size}
-                        className="btn btn-outline-secondary me-2 mb-2"
+                        className={`btn btn-outline-secondary me-2 mb-2 ${selectedSize === size ? 'active' : ''}`}
+                        onClick={() => setSelectedSize(size)}
                       >
                         {size}
                       </button>
-                    )) : <div></div>}
+                    )) : <div>No hay talles disponibles</div>}
                   </div>
                 </div>
                 <button className="btn btn-dark mt-3" onClick={handleAddToCart}>
