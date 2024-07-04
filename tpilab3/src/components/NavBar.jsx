@@ -1,10 +1,17 @@
-import React from 'react';
+import {useState} from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import { Person, Cart } from 'react-bootstrap-icons';
 import { useAuth } from '../services/AuthenticationContext'; 
 
 const NavBar = () => {
-  const { isAuthenticated } = useAuth();  
+  const { isAuthenticated, logout, userRole } = useAuth();  
+
+  const [showLogout, setShowLogout] = useState(false);
+
+  const toggleLogout = () => {
+    setShowLogout(!showLogout);
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -21,23 +28,39 @@ const NavBar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/shop">Productos</Link>
             </li>
+            {userRole == 'admin' ? (
+          <li className="nav-item">
+          <Link className="nav-link" to="/users">Usuarios</Link>
+          </li>
+        ) : null}
           </ul>
         </div>
         <div className="d-flex">
-          {isAuthenticated ? (
-            <Link to="/login" className="btn btn-outline-secondary me-2">
-              <Person />
-            </Link>
-          ) : (
-            <>
-              <Link to="/register" className="btn btn-outline-secondary me-2">
-                <Person />
-              </Link>
-              <Link to="/login" className="btn btn-outline-secondary">
-                Iniciar sesión
-              </Link>
-            </>
+        {isAuthenticated ? (
+        <>
+          <Button
+            variant="outline-secondary"
+            className="me-2"
+            onClick={toggleLogout}
+          >
+            <Person />
+          </Button>
+          {showLogout && (
+            <Button
+              variant="secondary"
+              className="mt-2"
+              onClick={logout}
+              style={{ position: 'absolute', top: '100%'}}
+            >
+              Cerrar sesión
+            </Button>
           )}
+        </>
+      ) : (
+        <Link to="/login" className="btn btn-outline-secondary">
+          Iniciar sesión
+        </Link>
+      )}
           <Link to="/cart" className="btn btn-outline-secondary">
             <Cart />
           </Link>

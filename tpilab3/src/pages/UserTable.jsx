@@ -9,7 +9,7 @@ const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const { logout } = useAuth();
+  const { logout, userRole } = useAuth();
 
   async function fetchUsers() {
     try {

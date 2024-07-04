@@ -44,7 +44,7 @@ const App = () => {
     {
       path: "/users",
       element: (
-          <UserTable />
+        <PrivateRoute roles={['admin']} element={<UserTable />} />
       )
     },
     {
