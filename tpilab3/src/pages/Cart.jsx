@@ -2,16 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
+import { useCart } from '../services/CartContext'; // Asegúrate de importar el hook useCart
 
 const Cart = () => {
-  const cartItems = [
-    { id: 1, name: 'Producto 1', price: 29.99, size: 'M' },
-    { id: 2, name: 'Producto 2', price: 39.99, size: 'S' },
-    { id: 3, name: 'Producto 3', price: 49.99, size: 'L' },
-  ];
-
-  // Calcular el total del carrito
-  const total = cartItems.reduce((acc, item) => acc + item.price, 0).toFixed(2);
+  const { cart, removeFromCart, getTotal } = useCart(); // Usa el contexto para obtener los datos del carrito y las funciones
+  
+  // Obtener el total del carrito
+  const total = getTotal();
 
   return (
     <div>
@@ -26,17 +23,30 @@ const Cart = () => {
         <div className="row">
           <div className="col-md-8">
             <h2>Listado de Productos</h2>
-            <ul className="list-group">
-              {cartItems.map((item) => (
-                <li key={item.id} className="list-group-item d-flex justify-content-between align-items-center">
-                  <div>
-                    <h5>{item.name}</h5>
-                    <p>Precio: ${item.price.toFixed(2)}</p>
-                    <p>Talle: {item.size}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            {cart.length > 0 ? (
+              <ul className="list-group">
+                {cart.map((item) => (
+                  <li
+                    key={item.id}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h5>{item.name}</h5>
+                      <p>Precio: ${item.price.toFixed(2)}</p>
+                      <p>Talle: {item.size}</p>
+                    </div>
+                    <button
+                      className="btn btn-outline-danger"
+                      onClick={() => removeFromCart(item.id)}
+                    >
+                      Eliminar
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay productos en el carrito.</p>
+            )}
           </div>
           <div className="col-md-4">
             <h2>Resumen de la Compra</h2>
@@ -53,4 +63,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
