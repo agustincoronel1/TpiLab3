@@ -41,7 +41,7 @@ const Cart = () => {
             <div className="col-md-4">
               <h3>Resumen de Compra</h3>
               <p>Total: ${getTotal()}</p>
-              <button className="btn btn-dark">Finalizar Compra</button>
+              <Link to="/checkout" className="btn btn-dark">Finalizar Compra</Link> {/* Actualiza este botón */}
             </div>
           </div>
         ) : (

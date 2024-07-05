@@ -1,68 +1,61 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';  {/* Importa el componente Checkout */}
 import LoginPage from './pages/LoginPage';
 import RegisterAdmin from './pages/RegisterAdmin';
 import UserTable from './pages/UserTable';
+import RegisterUser from './pages/RegisterUser';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import PrivateRoute from './services/PrivateRoute';
 import { AuthProvider } from './services/AuthenticationContext';
-import RegisterUser from './pages/RegisterUser';
 
 const App = () => {
   const [cart, setCart] = useState([]);
-  
+
   const router = createBrowserRouter([
     {
       path: '/',
-      element: (
-            <Home />
-      ),
+      element: <Home />,
     },
     {
-      path: "/login",
-      element: (
-          <LoginPage />
-      ),
+      path: '/login',
+      element: <LoginPage />,
     },
     {
       path: '/shop',
-      element: (
-          <Shop carts={setCart} />
-      ),
+      element: <Shop carts={setCart} />,
     },
     {
       path: '/cart',
-      element: (
-        <PrivateRoute element={<Cart cart={cart} setCart={setCart}/>}/>
-      ),
+      element: <PrivateRoute element={<Cart cart={cart} setCart={setCart} />} />,
     },
     {
-      path: "/users",
-      element: (
-        <PrivateRoute roles={['admin']} element={<UserTable />} />
-      )
+      path: '/checkout',
+      element: <PrivateRoute element={<Checkout />} />,  
     },
     {
-      path: "/product/:id",
-      element: (
-          <ProductDetail />
-      ),
+      path: '/users',
+      element: <PrivateRoute roles={['admin']} element={<UserTable />} />,
     },
     {
-      path: "/register",
-      element: (
-          <RegisterUser />
-      ),
+      path: '/product/:id',
+      element: <ProductDetail />,
     },
-
+    {
+      path: '/register',
+      element: <RegisterUser />,
+    },
+    {
+      path: '/register-admin',
+      element: <PrivateRoute roles={['admin']} element={<RegisterAdmin />} />,
+    },
   ]);
 
-  
   return (
     <AuthProvider>
       <RouterProvider router={router} />
