@@ -7,10 +7,18 @@ import Card from '../components/Card';
 const Shop = ({carts}) => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    fetch('https://fake-api-nodejs-m072.onrender.com/products')
-      .then(response => response.json())
-      .then(data => setProducts(data))
-      .catch(error => console.log(error));
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('https://fake-api-nodejs-m072.onrender.com/products');
+        const data = await response.json();
+        setProducts(data);
+        console.log(data)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchProducts();
   }, []);
   return (
     <div id="main-wrapper" className="d-flex flex-column min-vh-100">

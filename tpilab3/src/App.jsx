@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import PrivateRoute from './services/PrivateRoute';
 import { AuthProvider } from './services/AuthenticationContext';
+import ProductForm from './pages/ProductForm';
 
 const App = () => {
   const [cart, setCart] = useState([]);
@@ -54,6 +55,10 @@ const App = () => {
       path: '/register-admin',
       element: <PrivateRoute roles={['admin']} element={<RegisterAdmin />} />,
     },
+    {
+      path: '/productedit/:id/',
+      element: <PrivateRoute roles={['admin', 'seller']} element={<ProductForm />} />,
+    }
   ]);
 
   return (

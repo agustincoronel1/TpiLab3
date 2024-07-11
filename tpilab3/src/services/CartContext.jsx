@@ -10,8 +10,10 @@ export const CartProvider = ({ children }) => {
     setCart(prevCart => [...prevCart, productWithSize]);
   };
 
-  const removeFromCart = (productId) => {
-    setCart(prevCart => prevCart.filter(product => product.id !== productId));
+  const removeFromCart = (deletedProduct) => {
+    console.log(deletedProduct)
+    console.log(cart)
+    setCart(prevCart => prevCart.filter(product => product.id !== deletedProduct.id || product.selectedSize !== deletedProduct.selectedSize));
   };
 
   const clearCart = () => {

@@ -3,9 +3,11 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { useCart } from '../services/CartContext';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../services/AuthenticationContext';
 
 const Cart = () => {
   const { cart, getTotal, removeFromCart } = useCart();
+  const {userRole} = useAuth();
 
   return (
     <div id="main-wrapper" className="d-flex flex-column min-vh-100">
@@ -29,7 +31,7 @@ const Cart = () => {
                         <h5 className="card-title">{item.name}</h5>
                         <p className="card-text">Precio: ${item.price}</p>
                         <p className="card-text">Talle: {item.selectedSize}</p>
-                        <button className="btn btn-danger" onClick={() => removeFromCart(item.id)}>
+                        <button className="btn btn-danger" onClick={() => removeFromCart(item)}>
                           Eliminar
                         </button>
                       </div>
@@ -39,9 +41,15 @@ const Cart = () => {
               ))}
             </div>
             <div className="col-md-4">
-              <h3>Resumen de Compra</h3>
-              <p>Total: ${getTotal()}</p>
-              <Link to="/checkout" className="btn btn-dark">Finalizar Compra</Link> {/* Actualiza este botón */}
+              {userRole !== 'admin' ? (
+                <>
+                  <h3>Resumen de Compra</h3>
+                  <p>Total: ${getTotal()}</p>
+                  <Link to="/checkout" className="btn btn-dark">Finalizar Compra</Link>
+                </>
+              ) : (
+                <p>No puedes realizar compras como administrador.</p>
+              )}
             </div>
           </div>
         ) : (

@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import Card from '../components/Card';
 import { Carousel } from 'react-bootstrap';
 import { useCart } from '../services/CartContext';
+import { useAuth } from '../services/AuthenticationContext';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -14,6 +15,8 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState('');
   const { addToCart } = useCart();
   const carouselItems = [];
+
+  const {isAuthenticated, userRole} = useAuth();
 
   async function fetchData() {
     try {
@@ -64,12 +67,18 @@ const ProductDetail = () => {
   createCarouselItems();
 
   const handleAddToCart = () => {
-    if (!selectedSize) {
-      alert('Por favor, selecciona un talle antes de agregar al carrito.');
-      return;
+    if(!isAuthenticated) {
+      alert('Por favor, inicia sesión para agregar productos al carrito.');
+    }else if(userRole === 'admin') {
+      alert('No puedes agregar productos al carrito siendo administrador.');
+    }else{
+      if (!selectedSize) {
+        alert('Por favor, selecciona un talle antes de agregar al carrito.');
+      }else{
+        addToCart(product, selectedSize);
+      alert('Producto agregado al carrito.');
+      }
     }
-
-    addToCart(product, selectedSize);
   };
 
   return (
