@@ -67,19 +67,25 @@ const ProductDetail = () => {
   createCarouselItems();
 
   const handleAddToCart = () => {
-    if(!isAuthenticated) {
+    if (!isAuthenticated) {
       alert('Por favor, inicia sesión para agregar productos al carrito.');
-    }else if(userRole === 'admin') {
-      alert('No puedes agregar productos al carrito siendo administrador.');
-    }else{
-      if (!selectedSize) {
-        alert('Por favor, selecciona un talle antes de agregar al carrito.');
-      }else{
-        addToCart(product, selectedSize);
-      alert('Producto agregado al carrito.');
-      }
+      return;
     }
+  
+    if (userRole === 'admin') {
+      alert('No puedes agregar productos al carrito siendo administrador.');
+      return;
+    }
+  
+    if (!selectedSize) {
+      alert('Por favor, selecciona un talle antes de agregar al carrito.');
+      return;
+    }
+  
+    addToCart(product, selectedSize); // Usa la lógica del contexto CartContext
+    alert('Producto agregado al carrito.');
   };
+  
 
   return (
     <div id="main-wrapper" className="d-flex flex-column min-vh-100">

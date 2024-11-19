@@ -7,7 +7,7 @@ import { useAuth } from '../services/AuthenticationContext';
 
 const Cart = () => {
   const { cart, getTotal, removeFromCart } = useCart();
-  const {userRole} = useAuth();
+  const { userRole } = useAuth();
 
   return (
     <div id="main-wrapper" className="d-flex flex-column min-vh-100">
@@ -31,6 +31,7 @@ const Cart = () => {
                         <h5 className="card-title">{item.name}</h5>
                         <p className="card-text">Precio: ${item.price}</p>
                         <p className="card-text">Talle: {item.selectedSize}</p>
+                        <p className="card-text">Cantidad: {item.quantity}</p> {/* Mostrar cantidad */}
                         <button className="btn btn-danger" onClick={() => removeFromCart(item)}>
                           Eliminar
                         </button>

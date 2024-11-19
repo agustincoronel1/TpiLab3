@@ -5,7 +5,6 @@ import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -82,7 +81,6 @@ const LoginPage = () => {
         </Col>
       </Row>
     </Container>
-    <Footer />
     </>
   );
 };

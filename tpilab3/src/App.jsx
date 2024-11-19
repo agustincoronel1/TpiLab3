@@ -18,7 +18,8 @@ import ProductForm from './pages/ProductForm';
 const App = () => {
   const [cart, setCart] = useState([]);
 
-  const router = createBrowserRouter([
+  const router = createBrowserRouter([ //este createBrowserRouter es lo que permite el enrutado dinamico 
+
     {
       path: '/',
       element: <Home />,

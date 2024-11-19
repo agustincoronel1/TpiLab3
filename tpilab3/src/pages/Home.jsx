@@ -41,7 +41,7 @@ const Home = () => {
           <div className="flex-grow-1 d-flex justify-content-center align-items-center">
             <div className="container-fluid text-center">
               <img src={portada} alt="Portada" className="img-fluid" />
-              <h2 className="mt-4 mb-3">NEW IN - *NOMBRE TIENDA*</h2>
+              <h2 className="mt-4 mb-3">TIENDA ROSARIO</h2>
               <div className="mb-5"> {/* Añadido margin-bottom */}
                 <Carousel 
                   indicators={false} 
