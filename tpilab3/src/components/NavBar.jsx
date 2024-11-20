@@ -61,11 +61,11 @@ const NavBar = () => {
               Iniciar sesión
             </Link>
           )}
-          {userRole !== 'admin' && (
-            <Link to="/cart" className="btn btn-outline-secondary">
-              <Cart />
-            </Link>
-          )}
+            {(userRole !== 'admin' && userRole !== 'seller') && (
+        <Link to="/cart" className="btn btn-outline-secondary">
+          <Cart />
+        </Link>
+      )}
         </div>
       </div>
     </nav>

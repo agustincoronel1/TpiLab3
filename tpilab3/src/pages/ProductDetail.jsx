@@ -6,6 +6,8 @@ import Card from '../components/Card';
 import { Carousel } from 'react-bootstrap';
 import { useCart } from '../services/CartContext';
 import { useAuth } from '../services/AuthenticationContext';
+import { Link } from 'react-router-dom';
+
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -82,7 +84,7 @@ const ProductDetail = () => {
       return;
     }
   
-    addToCart(product, selectedSize); // Usa la lógica del contexto CartContext
+    addToCart(product, selectedSize); // la lógica del contexto CartContext
   };
   
 
@@ -99,12 +101,13 @@ const ProductDetail = () => {
                 <img src={product.image} alt={product.name} className="img-fluid" />
               </div>
               <div className="col-md-6 d-flex flex-column justify-content-center">
-                <h1>{product.name}</h1>
-                <h2>${product.price}</h2>
-                <div className="my-3">
-                  <h5>Talles disponibles:</h5>
-                  <div>
-                    {product.sizes && product.sizes.length > 0 ? product.sizes.map(size => (
+              <h1>{product.name}</h1>
+              <h2>${product.price}</h2>
+              <div className="my-3">
+                <h5>Talles disponibles:</h5>
+                <div>
+                  {product.sizes && product.sizes.length > 0 ? (
+                    product.sizes.map(size => (
                       <button
                         key={size}
                         className={`btn btn-outline-secondary me-2 mb-2 ${selectedSize === size ? 'active' : ''}`}
@@ -112,13 +115,33 @@ const ProductDetail = () => {
                       >
                         {size}
                       </button>
-                    )) : <div>No hay talles disponibles</div>}
-                  </div>
+                    ))
+                  ) : (
+                    <div>No hay talles disponibles</div>
+                  )}
                 </div>
+              </div>
+              
+              {userRole === 'admin' || userRole === 'seller' ? (
+            <Link
+            to={`/productedit/${product.id}`}
+            style={{
+              backgroundColor: '#5C4033',
+              color: '#fff',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '5px',
+              textDecoration: 'none',
+            }}
+          >
+            Editar producto
+          </Link>
+              ) : (
                 <button className="btn btn-dark mt-3" onClick={handleAddToCart}>
                   Agregar al carrito
                 </button>
-              </div>
+              )}
+            </div>
               <div className="mt-5">
                 <h2 className="text-center mb-4">TAMBIÉN TE PUEDE INTERESAR</h2>
                 <Carousel

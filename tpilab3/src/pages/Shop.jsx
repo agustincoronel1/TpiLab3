@@ -3,27 +3,36 @@ import { ArrowDown, Filter } from 'react-bootstrap-icons';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
+import { useAuth } from '../services/AuthenticationContext'; // Importar el contexto de autenticación
 
-const Shop = ({ carts }) => {
+const Shop = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [sortOrder, setSortOrder] = useState(null); // Orden actual: ascendente o descendente
-  const [filter, setFilter] = useState(''); // Filtro actual: remera, buzo, camisa, etc.
+  const [sortOrder, setSortOrder] = useState(null);
+  const [filter, setFilter] = useState('');
+  const { userRole } = useAuth(); // Obtener el rol del usuario
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await fetch('https://fake-api-nodejs-m072.onrender.com/products');
         const data = await response.json();
-        setProducts(data);
-        setFilteredProducts(data); // Inicialmente todos los productos visibles
+
+        // filtrar los productos según el rol del usuario
+        const initialProducts =
+          userRole === 'admin' || userRole === 'seller'
+            ? data // Mostrar todos los productos
+            : data.filter((product) => product.on_sale); //mostrar solo productos en oferta
+
+        setProducts(initialProducts);
+        setFilteredProducts(initialProducts); // inicializar los productos filtrados
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [userRole]);
 
   // Función para manejar el ordenamiento
   const handleSort = () => {
@@ -64,48 +73,44 @@ const Shop = ({ carts }) => {
                 Ordenar por precio ({sortOrder === 'asc' ? 'Ascendente' : sortOrder === 'desc' ? 'Descendente' : 'Ninguno'})
               </button>
               <div className="dropdown d-inline-block">
-  <button
-    className="btn btn-brown dropdown-toggle"
-    type="button"
-    id="filterDropdown"
-    data-bs-toggle="dropdown"
-    aria-expanded="false"
-  >
-    <Filter className="me-2" />
-    Filtrar por tipo
-  </button>
-  {/* Asegúrate de que el <ul> está directamente relacionado con el botón */}
-  <ul className="dropdown-menu" aria-labelledby="filterDropdown">
-    <li>
-      <button className="dropdown-item" onClick={() => handleFilter("")}>
-        Todos
-      </button>
-    </li>
-    <li>
-      <button className="dropdown-item" onClick={() => handleFilter("remera")}>
-        Remeras
-      </button>
-    </li>
-    <li>
-      <button className="dropdown-item" onClick={() => handleFilter("buzo")}>
-        Buzos
-      </button>
-    </li>
-    <li>
-      <button className="dropdown-item" onClick={() => handleFilter("camisa")}>
-        Camisas
-      </button>
-    </li>
-    <li>
-      <button
-        className="dropdown-item"
-        onClick={() => handleFilter("musculosa")}
-      >
-        Musculosas
-      </button>
-    </li>
-  </ul>
-</div>
+                <button
+                  className="btn btn-brown dropdown-toggle"
+                  type="button"
+                  id="filterDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <Filter className="me-2" />
+                  Filtrar por tipo
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="filterDropdown">
+                  <li>
+                    <button className="dropdown-item" onClick={() => handleFilter('')}>
+                      Todos
+                    </button>
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={() => handleFilter('remera')}>
+                      Remeras
+                    </button>
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={() => handleFilter('buzo')}>
+                      Buzos
+                    </button>
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={() => handleFilter('camisa')}>
+                      Camisas
+                    </button>
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={() => handleFilter('musculosa')}>
+                      Musculosas
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           <div className="row">

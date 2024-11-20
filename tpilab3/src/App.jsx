@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Shop from './pages/Shop';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
-import Checkout from './pages/Checkout';  {/* Importa el componente Checkout */}
+import Checkout from './pages/Checkout';  
 import LoginPage from './pages/LoginPage';
 import RegisterAdmin from './pages/RegisterAdmin';
 import UserTable from './pages/UserTable';

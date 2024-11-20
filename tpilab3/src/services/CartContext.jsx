@@ -60,7 +60,7 @@ export const CartProvider = ({ children }) => {
             // Reducir la cantidad si hay más de 1
             acc.push({ ...item, quantity: item.quantity - 1 });
           }
-          // Si queda solo uno, lo elimina
+          // Si queda solo uno lo elimina
         } else {
           acc.push(item);
         }

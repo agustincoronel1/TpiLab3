@@ -31,7 +31,7 @@ const Cart = () => {
                         <h5 className="card-title">{item.name}</h5>
                         <p className="card-text">Precio: ${item.price}</p>
                         <p className="card-text">Talle: {item.selectedSize}</p>
-                        <p className="card-text">Cantidad: {item.quantity}</p> {/* Mostrar cantidad */}
+                        <p className="card-text">Cantidad: {item.quantity}</p> 
                         <button className="btn btn-danger" onClick={() => removeFromCart(item)}>
                           Eliminar
                         </button>
