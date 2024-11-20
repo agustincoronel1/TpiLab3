@@ -6,7 +6,7 @@ import { CheckCircle } from 'react-bootstrap-icons';
 import { useCart } from '../services/CartContext';
 
 const Checkout = () => {
-  const { clearCart } = useCart();
+  const { clearCart, checkCartStock } = useCart();
   const [showSuccess, setShowSuccess] = useState(false);  
   const [paymentMethod, setPaymentMethod] = useState('');
   const [formData, setFormData] = useState({
@@ -29,6 +29,11 @@ const Checkout = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const item = checkCartStock()
+    if(item){
+      alert('No hay stock disponible del producto '+ item.name + 'solo quedan ' + item.stock + ' unidades');
+      return
+    }
     setShowSuccess(true);
     clearCart();
   };

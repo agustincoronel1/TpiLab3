@@ -5,13 +5,38 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
+  const checkStock = (product) => {
+    // Verificar si hay stock disponible
+    console.log('Product stock: '+ product.stock);
+    console.log('Cart: '+cart);
+    if (cart){
+      const cartItem = cart.find((item) => item.id === product.id);
+      console.log(cartItem ? cartItem.quantity : 0);
+      return product.stock <= 0 || (cartItem && product.stock <= cartItem.quantity);
+    }
+    
+  }
+  const checkCartStock = () => {
+    cart.forEach((item) => {
+      if (item.quantity > item.stock) {
+        return item;
+      }else{
+        return null;
+      }
+    });
+  }
+
   const addToCart = (product, size) => {
+    if (checkStock(product)) {
+      alert('No hay stock disponible para el talle seleccionado.');
+      return;
+    }
     setCart((prevCart) => {
       // Verificar si ya existe un producto con el mismo id y talle
       const existingProduct = prevCart.find(
         (item) => item.id === product.id && item.selectedSize === size
       );
-  
+      alert('Producto agregado al carrito.');
       if (existingProduct) {
         // Incrementar la cantidad si ya existe
         return prevCart.map((item) =>
@@ -52,7 +77,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, getTotal }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, getTotal, checkCartStock }}>
       {children}
     </CartContext.Provider>
   );

@@ -83,7 +83,6 @@ const ProductDetail = () => {
     }
   
     addToCart(product, selectedSize); // Usa la lógica del contexto CartContext
-    alert('Producto agregado al carrito.');
   };
   
 
