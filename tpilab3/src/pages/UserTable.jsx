@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Container, Spinner, Nav } from 'react-bootstrap';
+import { Table, Button, Container, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
@@ -9,66 +9,70 @@ import './UserTable.css';
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [update, setUpdate] = useState(true);
+  const [update, setUpdate] = useState(false);
 
-  const { logout, userRole } = useAuth();
+  const { logout } = useAuth();
 
+  // Fetch users from the API
   async function fetchUsers() {
     try {
       const response = await fetch('https://fake-api-nodejs-m072.onrender.com/users');
       const json = await response.json();
       setUsers(json);
       setLoading(false);
-      console.log(response)
     } catch (e) {
-      console.error(e);
+      console.error('Error fetching users:', e);
       setLoading(false);
     }
   }
-  async function deleteUser(user) {
+
+  // Delete a user
+  const deleteUser = async (user) => {
     try {
       await fetch(`https://fake-api-nodejs-m072.onrender.com/users/${user.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
-    setUpdate(!update);
+      setUpdate((prev) => !prev); // Trigger rerender
     } catch (e) {
-      console.error(e);
-  }
-}
+      console.error('Error deleting user:', e);
+    }
+  };
 
+  // Disable a user
   const disableUser = async (user) => {
     try {
       const updatedUser = { ...user, status: false };
       await fetch(`https://fake-api-nodejs-m072.onrender.com/users/${user.id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedUser)
+        body: JSON.stringify(updatedUser),
       });
-      setUpdate(!update);
+      setUpdate((prev) => !prev); // Trigger rerender
     } catch (e) {
-      console.error(e);
+      console.error('Error disabling user:', e);
     }
-  }
+  };
 
+  // Enable a user
   const enableUser = async (user) => {
-    const updatedUser = { ...user, status: false };
-    
     try {
+      const updatedUser = { ...user, status: true }; // Set status to true
       await fetch(`https://fake-api-nodejs-m072.onrender.com/users/${user.id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedUser)
+        body: JSON.stringify(updatedUser),
       });
-      setUpdate(!update);
+      setUpdate((prev) => !prev); // Trigger rerender
     } catch (e) {
-      console.error(e);
+      console.error('Error enabling user:', e);
     }
-  }
+  };
 
+  // Change user role
   const changeUserRole = async (user, role) => {
     try {
       const updatedUser = { ...user, userRole: role};
@@ -79,23 +83,21 @@ const UserTable = () => {
         },
         body: JSON.stringify(updatedUser)
       });
-      setUpdate(!update);
+      setUpdate((prev) => !prev); 
     } catch (e) {
-      console.error(e);
+      console.error('Error changing user role:', e);
     }
-  }
+  };
 
+  // Fetch users on component mount or update
   useEffect(() => {
     fetchUsers();
-    console.log(users)
   }, [update]);
-
 
   return (
     <div id="main-wrapper" className="d-flex flex-column min-vh-100">
       <NavBar />
       <Container className="mt-5">
-
         <h1 className="mb-4">Admin Page</h1>
         {loading ? (
           <div className="text-center">
@@ -114,24 +116,38 @@ const UserTable = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map(user => (
+              {users.map((user) => (
                 <tr key={user.id}>
                   <td>{user.id}</td>
-                  <td>{user.firstName + " " + user.lastName} </td>
+                  <td>{user.firstName + ' ' + user.lastName}</td>
                   <td>{user.email}</td>
-                  <td>{user.status ? <p>Activo</p>:<p>Inactivo</p>}</td>
-                  <td id='actions'>
-                    <Button variant="danger" onClick={()=>deleteUser(user)}>
+                  <td>{user.status ? 'Activo' : 'Inactivo'}</td>
+                  <td id="actions">
+                    <Button variant="danger" className="me-2" onClick={() => deleteUser(user)}>
                       Eliminar
-                    </Button>                    
-                    <Button variant="danger" onClick={()=>disableUser(user)}>
+                    </Button>
+                    <Button
+                      variant="warning"
+                      className="me-2"
+                      onClick={() => disableUser(user)}
+                      disabled={!user.status} // Disable button if already inactive
+                    >
                       Deshabilitar
                     </Button>
-                    <Button variant="success" onClick={() => enableUser(user)}>
+                    <Button
+                      variant="success"
+                      className="me-2"
+                      onClick={() => enableUser(user)}
+                      disabled={user.status} // Disable button if already active
+                    >
                       Habilitar
                     </Button>
-                    <select value={user.role} defaultValue={user.userRole} onChange={(e) => changeUserRole(user, e.target.value)}>
-                      <option value="admin">Admin</option>                      
+                    <select
+                      value={user.userRole}
+                      onChange={(e) => changeUserRole(user, e.target.value)}
+                      className="form-select w-auto"
+                    >
+                      <option value="admin">Admin</option>
                       <option value="seller">Seller</option>
                       <option value="buyer">User</option>
                     </select>
@@ -141,9 +157,11 @@ const UserTable = () => {
             </tbody>
           </Table>
         )}
-      <div>
-      <button onClick={logout}>Logout</button>
-    </div>
+        <div>
+          <button className="btn btn-dark mt-3" onClick={logout}>
+            Logout
+          </button>
+        </div>
       </Container>
       <Footer />
     </div>

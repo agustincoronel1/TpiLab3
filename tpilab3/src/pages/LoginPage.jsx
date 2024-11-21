@@ -30,9 +30,11 @@ const LoginPage = () => {
       console.log('data', data)
       const user = data.find((user) => user.email === email && user.password === password);
       console.log(user)
-      if (user) {
+      if (user && user.status) {
         login(user.userRole);
         navigate('/');
+      } else if (user && !user.status) {
+        setError('User is disabled');
       } else {
         setError('Invalid email or password');
       }
