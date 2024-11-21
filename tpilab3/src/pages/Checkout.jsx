@@ -29,11 +29,16 @@ const Checkout = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const item = checkCartStock()
-    if(item){
-      alert('No hay stock disponible del producto '+ item.name + 'solo quedan ' + item.stock + ' unidades');
-      return
+    // La funcion checkCartStock devuelve un array con los productos que no tienen stock suficiente
+    // Si el array tiene elementos, se muestra un alert con los productos que no tienen stock suficiente
+    const items = checkCartStock();
+    if (items.length > 0) {
+      // Se crea un string con los nombres de los productos que no tienen stock suficiente
+      const outOfStockItems = items.map(item => `${item.name} (quedan ${item.stock} unidades)`).join(', ');
+      alert(`No hay stock disponible de los siguientes productos: ${outOfStockItems}`);
+      return;
     }
+    // Si no hay productos sin stock suficiente se procede a la compra
     setShowSuccess(true);
     clearCart();
   };

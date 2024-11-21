@@ -15,7 +15,7 @@ const EditProductForm = () => {
     image: '',
     on_sale: false,
     sizes: [],
-    featured: false
+    featured: false,
   });
 
   async function fetchData() {
@@ -37,7 +37,7 @@ const EditProductForm = () => {
 
   useEffect(() => {
     if (!loading && products.length > 0) {
-      const productFromId = products.find(prod => prod.id == id);
+      const productFromId = products.find((prod) => prod.id == id);
       if (productFromId) {
         setProduct(productFromId);
         setFormData({
@@ -46,8 +46,8 @@ const EditProductForm = () => {
           stock: productFromId.stock,
           image: productFromId.image,
           on_sale: productFromId.on_sale,
-          sizes: productFromId.sizes,
-          featured: productFromId.featured
+          sizes: productFromId.sizes || [],
+          featured: productFromId.featured,
         });
       }
     }
@@ -57,33 +57,32 @@ const EditProductForm = () => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
-  const handleSizeChange = (index, e) => {
-    const { value } = e.target;
-    const newSizes = formData.sizes.map((size, i) => 
-      i === index ? value : size
+  const handleSizeChange = (index, field, value) => {
+    const updatedSizes = formData.sizes.map((sizeObj, i) =>
+      i === index ? { ...sizeObj, [field]: field === 'stock' ? parseInt(value, 10) : value } : sizeObj
     );
     setFormData({
       ...formData,
-      sizes: newSizes
+      sizes: updatedSizes,
     });
   };
 
   const handleAddSize = () => {
     setFormData({
       ...formData,
-      sizes: [...formData.sizes, '']
+      sizes: [...formData.sizes, { size: '', stock: 0 }],
     });
   };
 
   const handleRemoveSize = (index) => {
-    const newSizes = formData.sizes.filter((_, i) => i !== index);
+    const updatedSizes = formData.sizes.filter((_, i) => i !== index);
     setFormData({
       ...formData,
-      sizes: newSizes
+      sizes: updatedSizes,
     });
   };
 
@@ -93,12 +92,12 @@ const EditProductForm = () => {
       const response = await fetch(`https://fake-api-nodejs-m072.onrender.com/products/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
       const result = await response.json();
-      console.log(result)
+      console.log(result);
       alert('Producto actualizado correctamente');
     } catch (error) {
       console.error('Error al actualizar el producto:', error);
@@ -150,24 +149,22 @@ const EditProductForm = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">Stock</label>
-                    <input
-                      type="number"
-                      name="stock"
-                      className="form-control"
-                      value={formData.stock}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label">Talles</label>
-                    {formData.sizes.map((size, index) => (
-                      <div key={index} className="d-flex mb-2">
+                    <label className="form-label">Talles y Stock</label>
+                    {formData.sizes.map((sizeObj, index) => (
+                      <div key={index} className="d-flex align-items-center mb-2">
                         <input
                           type="text"
                           className="form-control me-2"
-                          value={size}
-                          onChange={(e) => handleSizeChange(index, e)}
+                          placeholder="Talle"
+                          value={sizeObj.size}
+                          onChange={(e) => handleSizeChange(index, 'size', e.target.value)}
+                        />
+                        <input
+                          type="number"
+                          className="form-control me-2"
+                          placeholder="Stock"
+                          value={sizeObj.stock}
+                          onChange={(e) => handleSizeChange(index, 'stock', e.target.value)}
                         />
                         <button
                           type="button"
