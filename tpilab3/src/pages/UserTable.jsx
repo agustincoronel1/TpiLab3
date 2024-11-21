@@ -4,13 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { useAuth } from '../services/AuthenticationContext';
+import { useNavigate } from 'react-router-dom';
 import './UserTable.css';
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [update, setUpdate] = useState(false);
-
+  const navigate = useNavigate(); // Hook for navigation
   const { logout } = useAuth();
 
   // Fetch users from the API
@@ -98,7 +99,16 @@ const UserTable = () => {
     <div id="main-wrapper" className="d-flex flex-column min-vh-100">
       <NavBar />
       <Container className="mt-5">
-        <h1 className="mb-4">Admin Page</h1>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h1>Admin Page</h1>
+          <Button
+            variant="primary"
+            className="btn-add-user"
+            onClick={() => navigate('/register-admin')}
+          >
+            Agregar Usuario
+          </Button>
+        </div>
         {loading ? (
           <div className="text-center">
             <Spinner animation="border" />
