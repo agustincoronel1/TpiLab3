@@ -14,6 +14,7 @@ import './index.css';
 import PrivateRoute from './services/PrivateRoute';
 import { AuthProvider } from './services/AuthenticationContext';
 import ProductForm from './pages/ProductForm';
+import NotFound from './pages/NotFound';
 
 const App = () => {
   const [cart, setCart] = useState([]);
@@ -59,7 +60,11 @@ const App = () => {
     {
       path: '/productedit/:id/',
       element: <PrivateRoute roles={['admin', 'seller']} element={<ProductForm />} />,
-    }
+    },
+    {
+      path: '*', // Ruta comodín para capturar URLs no encontradas
+      element: <NotFound />,
+    },
   ]);
 
   return (
