@@ -6,7 +6,7 @@ import { CheckCircle } from 'react-bootstrap-icons';
 import { useCart } from '../services/CartContext';
 
 const Checkout = () => {
-  const { clearCart, checkCartStock } = useCart();
+  const { clearCart, checkCartStock, removeStock } = useCart();
   const [showSuccess, setShowSuccess] = useState(false);  
   const [paymentMethod, setPaymentMethod] = useState('');
   const [formData, setFormData] = useState({
@@ -27,6 +27,8 @@ const Checkout = () => {
     });
   };
 
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // La funcion checkCartStock devuelve un array con los productos que no tienen stock suficiente
@@ -39,6 +41,7 @@ const Checkout = () => {
       return;
     }
     // Si no hay productos sin stock suficiente se procede a la compra
+    removeStock()
     setShowSuccess(true);
     clearCart();
   };

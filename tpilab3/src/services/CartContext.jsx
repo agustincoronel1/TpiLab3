@@ -80,6 +80,36 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const removeStock = async () => {
+    const updatedProducts = cart.map((item) => {
+      const product = item;
+      const productSize = product.sizes.find((s) => s.size === item.selectedSize);
+      if (productSize) {
+        productSize.stock -= item.quantity;
+      }
+      return product;
+    });
+
+    try {
+      for (const product of updatedProducts) {
+        const response = await fetch(`https://fake-api-nodejs-m072.onrender.com/products/${product.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(product),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Error al actualizar el producto con ID ${product.id}`);
+        }
+      }
+    } catch (error) {
+      console.error('Error al actualizar el stock:', error);
+      alert('Hubo un error al realizar la compra. Por favor, inténtelo de nuevo.');
+    }
+  };
+
   const clearCart = () => {
     setCart([]);
   };
@@ -96,7 +126,8 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         clearCart,
         getTotal,
-        checkCartStock
+        checkCartStock,
+        removeStock
       }}
     >
       {children}
