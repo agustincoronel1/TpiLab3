@@ -1,11 +1,11 @@
 import React, { createContext, useState, useContext } from 'react';
 
-const CartContext = createContext();
+const CartContext = createContext(); 
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
-  const checkStock = (product, size) => {
+  const checkStock = (product, size) => { //esto te devuelvo true o false si hay stoc o no 
     // encontramos el stock correspondiente al talle seleccionado
     const selectedSize = product.sizes.find((s) => s.size === size);
     console.log(product)
@@ -16,8 +16,7 @@ export const CartProvider = ({ children }) => {
       return true; // lo consideramos sin stock
     }
 
-    const cartItem = cart.find(
-      (item) => item.id === product.id && item.selectedSize === size
+    const cartItem = cart.find((item) => item.id === product.id && item.selectedSize === size
     );
 
     // verifico si el stock disponible es suficiente
@@ -42,9 +41,8 @@ export const CartProvider = ({ children }) => {
       return;
     }
 
-    setCart((prevCart) => {
-      const existingProduct = prevCart.find(
-        (item) => item.id === product.id && item.selectedSize === size
+    setCart((prevCart) => { //necesitamos saber el carrito previo para poder setear 
+      const existingProduct = prevCart.find((item) => item.id === product.id && item.selectedSize === size //buscamos el producto 
       );
       console.log(existingProduct)
       if (existingProduct) {
@@ -67,14 +65,11 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (deletedProduct) => {
-    setCart((prevCart) =>
-      prevCart.reduce((acc, item) => {
+    setCart((prevCart) => prevCart.reduce((acc, item) => {
         if (
-          item.id === deletedProduct.id &&
-          item.selectedSize === deletedProduct.selectedSize
+          item.id === deletedProduct.id && item.selectedSize === deletedProduct.selectedSize
         ) {
-          if (item.quantity > 1) {
-            acc.push({ ...item, quantity: item.quantity - 1 });
+          if (item.quantity > 1) { acc.push({ ...item, quantity: item.quantity - 1 }); //le borramos uno a la cantd
           }
           // si queda solo uno lo elimina
         } else {
@@ -87,14 +82,10 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem('cart'); 
   };
 
   const getTotal = () => {
-    return cart.reduce(
-      (total, product) => total + product.price * product.quantity,
-      0
-    );
+    return cart.reduce((total, product) => total + product.price * product.quantity,0);
   };
 
   return (

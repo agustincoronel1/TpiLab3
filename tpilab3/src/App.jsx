@@ -62,7 +62,7 @@ const App = () => {
       element: <PrivateRoute roles={['admin', 'seller']} element={<ProductForm />} />,
     },
     {
-      path: '*', // Ruta comodín para capturar URLs no encontradas
+      path: '*', // ruta comodin para capturar URLs no encontradas
       element: <NotFound />,
     },
   ]);

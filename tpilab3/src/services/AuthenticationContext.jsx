@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
     const storedValue = localStorage.getItem('isAuthenticated');
     return storedValue === 'true';
   });
+  
   const [userRole, setUserRole] = useState(() => {
     return localStorage.getItem('userRole') || 'guest';
   });
