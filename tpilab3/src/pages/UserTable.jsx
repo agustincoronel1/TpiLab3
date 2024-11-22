@@ -11,10 +11,9 @@ const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [update, setUpdate] = useState(false);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
   const { logout } = useAuth();
 
-  // Fetch users from the API
   async function fetchUsers() {
     try {
       const response = await fetch('https://fake-api-nodejs-m072.onrender.com/users');
@@ -27,7 +26,6 @@ const UserTable = () => {
     }
   }
 
-  // Delete a user
   const deleteUser = async (user) => {
     try {
       await fetch(`https://fake-api-nodejs-m072.onrender.com/users/${user.id}`, {
@@ -39,7 +37,6 @@ const UserTable = () => {
     }
   };
 
-  // Disable a user
   const disableUser = async (user) => {
     try {
       const updatedUser = { ...user, status: false };
@@ -50,16 +47,16 @@ const UserTable = () => {
         },
         body: JSON.stringify(updatedUser),
       });
-      setUpdate((prev) => !prev); // Trigger rerender
+      setUpdate((prev) => !prev);
     } catch (e) {
       console.error('Error disabling user:', e);
     }
   };
 
-  // Enable a user
+  // Habilitamos el usuario con el metodo PUT
   const enableUser = async (user) => {
     try {
-      const updatedUser = { ...user, status: true }; // Set status to true
+      const updatedUser = { ...user, status: true };
       await fetch(`https://fake-api-nodejs-m072.onrender.com/users/${user.id}`, {
         method: 'PUT',
         headers: {
@@ -67,13 +64,13 @@ const UserTable = () => {
         },
         body: JSON.stringify(updatedUser),
       });
-      setUpdate((prev) => !prev); // Trigger rerender
+      setUpdate((prev) => !prev);
     } catch (e) {
       console.error('Error enabling user:', e);
     }
   };
 
-  // Change user role
+  // Usamos esta funcion para cambiar el rol de un usuario
   const changeUserRole = async (user, role) => {
     try {
       const updatedUser = { ...user, userRole: role};
@@ -90,7 +87,7 @@ const UserTable = () => {
     }
   };
 
-  // Fetch users on component mount or update
+  // Cada vez que se actualiza el estado update, se vuelve a llamar a fetchUsers
   useEffect(() => {
     fetchUsers();
   }, [update]);
@@ -140,7 +137,7 @@ const UserTable = () => {
                       variant="warning"
                       className="me-2"
                       onClick={() => disableUser(user)}
-                      disabled={!user.status} // Disable button if already inactive
+                      disabled={!user.status}
                     >
                       Deshabilitar
                     </Button>
@@ -148,7 +145,7 @@ const UserTable = () => {
                       variant="success"
                       className="me-2"
                       onClick={() => enableUser(user)}
-                      disabled={user.status} // Disable button if already active
+                      disabled={user.status}
                     >
                       Habilitar
                     </Button>
