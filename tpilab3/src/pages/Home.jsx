@@ -3,7 +3,7 @@ import { Carousel } from 'react-bootstrap';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
-import { useAuth } from '../services/AuthenticationContext'; // mporta el contexto de autenticación
+import { useAuth } from '../services/AuthenticationContext'; // Importa el contexto de autenticación
 
 const Home = () => {
   const carouselItems = [];
@@ -17,13 +17,13 @@ const Home = () => {
       .catch(error => console.log(error));
   }, []);
 
-  // Filtrar productos según el rol del usuario
+  // filtramos productos según el rol del usuario
   const filteredProducts =
     userRole === 'admin' || userRole === 'seller'
       ? products // Mostrar todos los productos
       : products.filter(product => product.on_sale); // mostrar solo productos en oferta
 
-  // Creamos los elementos del carrusel en grupos de 4 productos
+  // creamos los elementos del carrusel en grupos de 4 productos
   for (let i = 0; i < filteredProducts.length; i += 4) {
     const items = filteredProducts.slice(i, i + 4).map(product => (
       <div className="col-md-3 d-flex justify-content-center" key={product.id}>
