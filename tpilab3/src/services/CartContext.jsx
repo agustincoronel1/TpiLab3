@@ -6,21 +6,21 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const checkStock = (product, size) => {
-    // Encontrar el stock correspondiente al talle seleccionado
+    // encontramos el stock correspondiente al talle seleccionado
     const selectedSize = product.sizes.find((s) => s.size === size);
     console.log(product)
     console.log(size)
 
     if (!selectedSize) {
       console.error(`El tamaño ${size} no está disponible para este producto.`);
-      return true; // Considerar como sin stock
+      return true; // lo consideramos sin stock
     }
 
     const cartItem = cart.find(
       (item) => item.id === product.id && item.selectedSize === size
     );
 
-    // Verificar si el stock disponible es suficiente
+    // verifico si el stock disponible es suficiente
     return (
       selectedSize.stock <= 0 ||
       (cartItem && selectedSize.stock <= cartItem.quantity)
@@ -48,7 +48,7 @@ export const CartProvider = ({ children }) => {
       );
       console.log(existingProduct)
       if (existingProduct) {
-        // Incrementar la cantidad si ya existe
+        // incrementar la cantidad si ya existe
         alert('Producto agregado al carrito.');
         return prevCart.map((item) =>
           item.id === product.id && item.selectedSize === size
@@ -56,7 +56,7 @@ export const CartProvider = ({ children }) => {
             : item
         );
       } else {
-        // Agregar como nuevo producto si no existe
+        // agregamos como nuevo producto si no existe
         alert('Producto agregado al carrito.');
         return [
           ...prevCart,
@@ -76,7 +76,7 @@ export const CartProvider = ({ children }) => {
           if (item.quantity > 1) {
             acc.push({ ...item, quantity: item.quantity - 1 });
           }
-          // Si queda solo uno lo elimina
+          // si queda solo uno lo elimina
         } else {
           acc.push(item);
         }
@@ -87,6 +87,7 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
+    localStorage.removeItem('cart'); 
   };
 
   const getTotal = () => {

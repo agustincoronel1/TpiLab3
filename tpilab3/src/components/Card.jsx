@@ -11,9 +11,9 @@ const Card = ({ product }) => {
         <img src={product.image} className="card-img-top" alt={product.name} />
         <div className="card-body">
           <h5 className="card-title">{product.name}</h5>
-          <p className="card-text">${product.price}</p>
-          {userRole === 'admin' || userRole === 'seller' ? (
-            <Link
+          <p className="card-text">${product.price}</p> 
+          {userRole === 'admin' || userRole === 'seller' ? ( //if para mostrar la card depende el user
+            <Link //si es admin o seller muestra el edit product
               to={`/productedit/${product.id}`}
               style={{
                 backgroundColor: '#5C4033',
@@ -24,10 +24,10 @@ const Card = ({ product }) => {
                 textDecoration: 'none',
               }}
             >
-              Editar producto
+              Editar producto 
             </Link>
-          ) : (
-            <button
+          ) : ( 
+            <button //sino muestra el boton para mostrar
               style={{
                 backgroundColor: '#5C4033',
                 color: '#fff',

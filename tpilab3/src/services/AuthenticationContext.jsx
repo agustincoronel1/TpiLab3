@@ -1,8 +1,11 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { useCart } from './CartContext'; 
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const { clearCart } = useCart(); // obtenemos la función clearCart del CartContext
+  
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const storedValue = localStorage.getItem('isAuthenticated');
     return storedValue === 'true';
@@ -20,32 +23,10 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setIsAuthenticated(false);
-    setUserRole('guest');
-    localStorage.setItem('isAuthenticated', 'false');
+    setUserRole(null);
+    localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userRole');
-  };
-
-  //agrego el register 
-  const register = async (userData) => {
-    try {
-      const response = await fetch('https://fake-api-nodejs-m072.onrender.com/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      if (response.ok) {
-        const newUser = await response.json();
-        return newUser;
-      } else {
-        throw new Error('Failed to register');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      throw error;
-    }
+    clearCart(); 
   };
 
   useEffect(() => {
@@ -58,7 +39,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userRole, login, logout, register }}>
+    <AuthContext.Provider value={{ isAuthenticated, userRole, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

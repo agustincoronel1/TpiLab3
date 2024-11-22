@@ -1,16 +1,21 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { Person, Cart } from 'react-bootstrap-icons';
 import { useAuth } from '../services/AuthenticationContext'; 
 
 const NavBar = () => {
   const { isAuthenticated, logout, userRole } = useAuth();  
-
   const [showLogout, setShowLogout] = useState(false);
+  const navigate = useNavigate(); 
 
   const toggleLogout = () => {
     setShowLogout(!showLogout);
+  };
+
+  const handleLogout = () => {
+    logout(); 
+    navigate('/'); 
   };
 
   return (
@@ -49,7 +54,7 @@ const NavBar = () => {
                 <Button
                   variant="secondary"
                   className="mt-2"
-                  onClick={logout}
+                  onClick={handleLogout} 
                   style={{ position: 'absolute', top: '100%' }}
                 >
                   Cerrar sesión
@@ -61,11 +66,11 @@ const NavBar = () => {
               Iniciar sesión
             </Link>
           )}
-            {(userRole !== 'admin' && userRole !== 'seller') && (
-        <Link to="/cart" className="btn btn-outline-secondary">
-          <Cart />
-        </Link>
-      )}
+          {(userRole !== 'admin' && userRole !== 'seller') && (
+            <Link to="/cart" className="btn btn-outline-secondary">
+              <Cart />
+            </Link>
+          )}
         </div>
       </div>
     </nav>
@@ -73,5 +78,4 @@ const NavBar = () => {
 };
 
 export default NavBar;
-
 
