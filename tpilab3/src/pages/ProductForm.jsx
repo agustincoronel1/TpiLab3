@@ -62,9 +62,26 @@ const EditProductForm = () => {
   };
 
   const handleSizeChange = (index, field, value) => {
+    const parsedValue = field === 'stock' ? parseInt(value, 10) : value;
+
+    // validamos que el stock sea mayor o igual a 0
+    if (field === 'stock' && parsedValue < 0) {
+      alert('El stock no puede ser negativo.');
+      return;
+    }
+
     const updatedSizes = formData.sizes.map((sizeObj, i) =>
-      i === index ? { ...sizeObj, [field]: field === 'stock' ? parseInt(value, 10) : value } : sizeObj
+      i === index ? { ...sizeObj, [field]: parsedValue } : sizeObj
     );
+
+    setFormData({
+      ...formData,
+      sizes: updatedSizes,
+    });
+  };
+
+  const handleRemoveSize = (index) => {
+    const updatedSizes = formData.sizes.filter((_, i) => i !== index);
     setFormData({
       ...formData,
       sizes: updatedSizes,
@@ -75,14 +92,6 @@ const EditProductForm = () => {
     setFormData({
       ...formData,
       sizes: [...formData.sizes, { size: '', stock: 0 }],
-    });
-  };
-
-  const handleRemoveSize = (index) => {
-    const updatedSizes = formData.sizes.filter((_, i) => i !== index);
-    setFormData({
-      ...formData,
-      sizes: updatedSizes,
     });
   };
 
