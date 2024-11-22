@@ -40,6 +40,7 @@ const RegisterUser = () => {
       await register(formData);
       navigate('/login'); 
     } catch (error) {
+      console.log('Error:', error);
       setError('An error occurred. Please try again.');
     }
   };
